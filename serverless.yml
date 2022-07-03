@@ -1,14 +1,47 @@
-
-
-service: my-swagger
-
+service: sls
+  custom:
+    settings:
+    PETS_TABLE: pets
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs12.x
-
+  environment: ${self:custom.settings}
+  region: us-west-2
+  iamRoleStatements: 
+    - Effect: "Allow"
+      Action:
+        - dynamodb.DescribeTable
+        - dynamodb.Scan
+        - dynamodb.GetItem
+        - dynamodb.PutItem
+        - dynamodb.UpdateItem
+        - dynamodb.DeleteItem
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.settings.PETS_TABLE}"
 
 functions:
   hello:
-    handler: handler.hello
+    handler: handler.createPet
+    events:
+      - http:
+      path: /pets
+      method: post
+
+resources:
+  Resources:
+    PetsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName : "id"
+            AttributeType: "N"
+          
+          keySchema:
+            - AttributeName: "id"
+              keyType: "HASH"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+            TableName: ${self:custom.settings.PETS_TABLE}
