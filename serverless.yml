@@ -1,20 +1,35 @@
-service: sls
+service: dynamodb-crud-api
 
-frameworkVersion: '3'
-
-	
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs14.x
   stage: dev
   region: us-west-2
+  environment:
+    DYNAMODB_TABLE_NAME: ${self:custom.petsTableName}
 
-functions:
-  createPet:
-    handler: api/pets.create
-    memorySize: 128
-    description: create new pet information
-    events:
-      - http: 
-          path: pets
-          method: post
+  
+custom:
+  petsTableName: pets-table-${self:provider.stage}
+
+plugins:
+  - serverless-iam-roles-per-function
+
+resources:
+  Resources:
+    PetsTable:
+      Type: AWS::DynamoDB::Table
+      properties:
+        TableName: ${self:custom.petsTableName}
+        AttributeDefinitions:
+          - AttributeName: petsId
+            AttributeType: S
+        
+        KeySchema:
+          - AttributeName: petsId
+            KeyType: HASH
+        
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+             
