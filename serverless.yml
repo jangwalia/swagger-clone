@@ -15,6 +15,90 @@ custom:
 plugins:
   - serverless-iam-roles-per-function
 
+function:
+#****GET PET BY ID ROUTE**********
+  getPet:
+    handler: api.getPet
+    name: get-pet
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: pets/{petId}
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:GetItem"
+        Resource: !GetAtt PetsTable.Arn
+
+# *********POST ROUTE FOR CREATING PET********
+
+  createPet:
+    handler: api.createPet
+    name: create-pet
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: pets
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:PutItem"
+        Resource: !GetAtt PetsTable.Arn
+
+# *******PUT ROUTE TO UPDATE PET********
+  updatePet:
+    handler: api.updatePet
+    name: update-pet
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: pets/{petId}
+          method: PUT
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:UpdateItem"
+        Resource: !GetAtt PetsTable.Arn
+
+
+# ****DELETE ROUTE TO REMOVE PET*******
+  deletePet:
+    handler: api.deletePet
+    name: delete-pet
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: pets/{petId}
+          method: DELETE
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:DeleteItem"
+        Resource: !GetAtt PetsTable.Arn
+
+
+# *******get All Pets**********
+  getAllPet:
+    handler: api.getAllPet
+    name: getAll-pet
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: pets/{category}
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:Scan"
+        Resource: !GetAtt PetsTable.Arn
+
 resources:
   Resources:
     PetsTable:
