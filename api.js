@@ -37,3 +37,30 @@ const getPet = async (event)=>{
 
   return response;
 }
+
+//**********Create ITEM FUNCTION */
+
+const createPet = async (event)=>{
+  const response = {statusCode: 200}
+  try {
+    const body = JSON.parse(event.body)
+    const params = {
+      TableName : process.env.DYNAMODB_TABLE_NAME,
+      Key : marshall(body || {}),
+    };
+    const createResult = await db.send(new PutItemCommand(params))
+    response.body = JSON.stringify({
+      message: "Successfully created new data",
+      createResult
+    })
+  } catch (error) {
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "failed to Create data",
+      errorMsg : error.message,
+      errorStack: error.Stack
+    })
+  }
+
+  return response;
+}
