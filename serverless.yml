@@ -15,7 +15,7 @@ custom:
 plugins:
   - serverless-iam-roles-per-function
 
-function:
+functions:
 #****GET PET BY ID ROUTE**********
   getPet:
     handler: api.getPet
@@ -91,7 +91,7 @@ function:
     timeout: 5
     events:
       - http:
-          path: pets/{category}
+          path: pets
           method: GET
     iamRoleStatements:
       - Effect: "Allow"
@@ -103,7 +103,7 @@ resources:
   Resources:
     PetsTable:
       Type: AWS::DynamoDB::Table
-      properties:
+      Properties:
         TableName: ${self:custom.petsTableName}
         AttributeDefinitions:
           - AttributeName: petId
