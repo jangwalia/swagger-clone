@@ -22,7 +22,7 @@ const getPet = async (event) => {
     const { Item } = await db.send(new GetItemCommand(params));
     response.body = JSON.stringify({
       message: "Successfully Retrieved the data",
-      data: Item ? unmarshall(Item) : {},
+      data: (Item) ? unmarshall(Item) : {},
       rawData: Item,
     });
   } catch (error) {
@@ -45,7 +45,7 @@ const createPet = async (event) => {
     const body = JSON.parse(event.body);
     const params = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
-      Key: marshall(body || {}),
+      Item: marshall(body || {}),
     };
     const createResult = await db.send(new PutItemCommand(params));
     response.body = JSON.stringify({
