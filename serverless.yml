@@ -105,36 +105,36 @@ functions:
 # *******POST ORDER********
   createOrder:
     handler: api.createOrder
-      name: create-order
-      memorySize: 128
-      timeout: 5
-      events:
-        - http:
-            path: store/order
-            method: POST
-      
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action: 
-            - "dynamodb:PutItem"
-          Resource: !GetAtt StoresTable.Arn
+    name: create-order
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: store/order
+          method: POST
+    
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:PutItem"
+        Resource: !GetAtt StoresTable.Arn
 
 #******* DELETE ORDER******
   deleteOrder:
-     handler: api.deleteOrder
-      name: delete-order
-      memorySize: 128
-      timeout: 5
-      events:
-        - http:
-            path: store/order/{orderId}
-            method: DELETE
-      
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action: 
-            - "dynamodb:DeleteItem"
-          Resource: !GetAtt StoresTable.Arn
+    handler: api.deleteOrder
+    name: delete-order
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: store/order/{orderId}
+          method: DELETE
+    
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:DeleteItem"
+        Resource: !GetAtt StoresTable.Arn
 
 
 
