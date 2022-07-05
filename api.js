@@ -5,7 +5,7 @@ const {
   PutItemCommand,
   UpdateItemCommand,
   DeleteItemCommand,
-  ScanCommand,
+  
 } = require("@aws-sdk/client-dynamodb");
 
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
@@ -137,33 +137,10 @@ const deletePet = async (event) => {
   return response;
 };
 
-//********** getAll pets FUNCTION */
-
-const getAllPet = async () => {
-  const response = { statusCode: 200 };
-  try {
-    const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME}));
-    response.body = JSON.stringify({
-      message: "Successfully retrieved data",
-      data: Items.map((item) => unmarshall(item)),
-      Items,
-    });
-  } catch (error) {
-    response.statusCode = 500;
-    response.body = JSON.stringify({
-      message: "failed to retrieve data",
-      errorMsg: error.message,
-      errorStack: error.Stack,
-    });
-  }
-
-  return response;
-};
 
 module.exports = {
   getPet,
   createPet,
   UpdatePet,
   deletePet,
-  getAllPet,
 };

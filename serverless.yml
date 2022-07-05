@@ -83,21 +83,6 @@ functions:
         Resource: !GetAtt PetsTable.Arn
 
 
-# *******get All Pets**********
-  getAllPet:
-    handler: api.getAllPet
-    name: getAll-pet
-    memorySize: 128
-    timeout: 5
-    events:
-      - http:
-          path: pets
-          method: GET
-    iamRoleStatements:
-      - Effect: "Allow"
-        Action: 
-          - "dynamodb:Scan"
-        Resource: !GetAtt PetsTable.Arn
 
 resources:
   Resources:
