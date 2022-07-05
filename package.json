@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/jangwalia/swagger-clone#readme",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.121.0",
+    "@aws-sdk/util-dynamodb": "^3.121.0",
     "aws-sdk": "^2.1167.0",
+    "serverless-iam-roles-per-function": "^3.2.0",
     "uuid": "^8.3.2"
   }
 }
