@@ -1,5 +1,5 @@
 const db = require("./db");
-
+import { v4 as uuidv4 } from 'uuid';
 const {
   GetItemCommand,
   PutItemCommand,
@@ -14,6 +14,7 @@ const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
 const getPet = async (event) => {
   const response = { statusCode: 200 };
+
   try {
     const params = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
@@ -43,9 +44,13 @@ const createPet = async (event) => {
   const response = { statusCode: 200 };
   try {
     const body = JSON.parse(event.body);
+    const newPet = {
+      ...body,
+      petId: uuidv4()
+    }
     const params = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
-      Item: marshall(body || {}),
+      Item: marshall(newPet || {}),
     };
     const createResult = await db.send(new PutItemCommand(params));
     response.body = JSON.stringify({
@@ -145,7 +150,7 @@ const getOrder = async (event) => {
   try {
     const params = {
       TableName: process.env.DYNAMO_STORE_TABLE,
-      Key: marshall({ petId: event.pathParameters.orderId }),
+      Key: marshall({ orderId: event.pathParameters.orderId }),
     };
     const { Item } = await db.send(new GetItemCommand(params));
     response.body = JSON.stringify({
@@ -167,10 +172,14 @@ const getOrder = async (event) => {
 
 // ********CREATE NEW ORDER**************
 
-const createORDER = async (event) => {
+const createOrder = async (event) => {
   const response = { statusCode: 200 };
   try {
     const body = JSON.parse(event.body);
+    const newOrder = {
+      ...body,
+      orderId: uuidv4()
+    }
     const params = {
       TableName: process.env.DYNAMO_STORE_TABLE,
       Item: marshall(body || {}),
@@ -193,12 +202,12 @@ const createORDER = async (event) => {
 };
 
 // ****** DELETE ORDER*********
-const deleteORDER = async (event) => {
+const deleteOrder = async (event) => {
   const response = { statusCode: 200 };
   try {
     const params = {
       TableName: process.env.DYNAMO_STORE_TABLE,
-      Key: marshall({ petId: event.pathParameters.orderId }),
+      Key: marshall({ orderId: event.pathParameters.orderId }),
     };
     const deletedResult = await db.send(new DeleteItemCommand(params));
     response.body = JSON.stringify({
@@ -223,6 +232,6 @@ module.exports = {
   UpdatePet,
   deletePet,
   getOrder,
-  createORDER,
-  deleteORDER
+  createOrder,
+  deleteOrder
 };

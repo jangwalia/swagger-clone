@@ -7,7 +7,7 @@ provider:
   region: us-west-2
   environment:
     DYNAMODB_TABLE_NAME: ${self:custom.petsTableName}
-    DYNAMO_STORE_TABLE: ${self.custom.storesTableName}
+    DYNAMO_STORE_TABLE: ${self:custom.storesTableName}
 
   
 custom:
