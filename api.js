@@ -137,10 +137,92 @@ const deletePet = async (event) => {
   return response;
 };
 
+// *********FUNCTIONS FOR ORDER TABLE*********
+
+// ********GET ORDER BY ORDERID*************
+const getOrder = async (event) => {
+  const response = { statusCode: 200 };
+  try {
+    const params = {
+      TableName: process.env.DYNAMO_STORE_TABLE,
+      Key: marshall({ petId: event.pathParameters.orderId }),
+    };
+    const { Item } = await db.send(new GetItemCommand(params));
+    response.body = JSON.stringify({
+      message: "Successfully Retrieved the data",
+      data: (Item) ? unmarshall(Item) : {},
+      rawData: Item,
+    });
+  } catch (error) {
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "failed to get data",
+      errorMsg: error.message,
+      errorStack: error.Stack,
+    });
+  }
+
+  return response;
+};
+
+// ********CREATE NEW ORDER**************
+
+const createORDER = async (event) => {
+  const response = { statusCode: 200 };
+  try {
+    const body = JSON.parse(event.body);
+    const params = {
+      TableName: process.env.DYNAMO_STORE_TABLE,
+      Item: marshall(body || {}),
+    };
+    const createResult = await db.send(new PutItemCommand(params));
+    response.body = JSON.stringify({
+      message: "Successfully created new data",
+      createResult,
+    });
+  } catch (error) {
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "failed to Create data",
+      errorMsg: error.message,
+      errorStack: error.Stack,
+    });
+  }
+
+  return response;
+};
+
+// ****** DELETE ORDER*********
+const deleteORDER = async (event) => {
+  const response = { statusCode: 200 };
+  try {
+    const params = {
+      TableName: process.env.DYNAMO_STORE_TABLE,
+      Key: marshall({ petId: event.pathParameters.orderId }),
+    };
+    const deletedResult = await db.send(new DeleteItemCommand(params));
+    response.body = JSON.stringify({
+      message: "Successfully removed data",
+      deletedResult,
+    });
+  } catch (error) {
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "failed to remove data",
+      errorMsg: error.message,
+      errorStack: error.Stack,
+    });
+  }
+
+  return response;
+};
 
 module.exports = {
   getPet,
   createPet,
   UpdatePet,
   deletePet,
+  getOrder,
+  createORDER,
+  deleteORDER
 };

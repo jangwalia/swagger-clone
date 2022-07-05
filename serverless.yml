@@ -7,11 +7,12 @@ provider:
   region: us-west-2
   environment:
     DYNAMODB_TABLE_NAME: ${self:custom.petsTableName}
+    DYNAMO_STORE_TABLE: ${self.custom.storesTableName}
 
   
 custom:
   petsTableName: pets-table-${self:provider.stage}
-
+  storesTableName: store-table-${self:provider.stage}
 plugins:
   - serverless-iam-roles-per-function
 
@@ -83,6 +84,59 @@ functions:
         Resource: !GetAtt PetsTable.Arn
 
 
+# ****GET ORDER DETAILS*********
+  getOrder:
+    handler: api.getOrder
+    name: get-order
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: store/order/{orderId}
+          method: GET
+    
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:GetItem"
+        Resource: !GetAtt StoresTable.Arn
+
+
+# *******POST ORDER********
+  createOrder:
+    handler: api.createOrder
+      name: create-order
+      memorySize: 128
+      timeout: 5
+      events:
+        - http:
+            path: store/order
+            method: POST
+      
+      iamRoleStatements:
+        - Effect: "Allow"
+          Action: 
+            - "dynamodb:PutItem"
+          Resource: !GetAtt StoresTable.Arn
+
+#******* DELETE ORDER******
+  deleteOrder:
+     handler: api.deleteOrder
+      name: delete-order
+      memorySize: 128
+      timeout: 5
+      events:
+        - http:
+            path: store/order/{orderId}
+            method: DELETE
+      
+      iamRoleStatements:
+        - Effect: "Allow"
+          Action: 
+            - "dynamodb:DeleteItem"
+          Resource: !GetAtt StoresTable.Arn
+
+
 
 resources:
   Resources:
@@ -101,4 +155,20 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-             
+
+
+    StoresTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.storesTableName}
+        AttributeDefinitions:
+          - AttributeName: orderId
+            AttributeType: S
+        
+        KeySchema:
+          - AttributeName: orderId
+            KeyType: HASH
+        
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
