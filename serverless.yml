@@ -106,11 +106,11 @@ resources:
       properties:
         TableName: ${self:custom.petsTableName}
         AttributeDefinitions:
-          - AttributeName: petsId
+          - AttributeName: petId
             AttributeType: S
         
         KeySchema:
-          - AttributeName: petsId
+          - AttributeName: petId
             KeyType: HASH
         
         ProvisionedThroughput:
