@@ -139,10 +139,10 @@ const deletePet = async (event) => {
 
 //********** getAll pets FUNCTION */
 
-const getAllPet = async (event) => {
+const getAllPet = async () => {
   const response = { statusCode: 200 };
   try {
-    const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
+    const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME}));
     response.body = JSON.stringify({
       message: "Successfully retrieved data",
       data: Items.map((item) => unmarshall(item)),
