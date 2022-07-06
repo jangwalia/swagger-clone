@@ -44,13 +44,9 @@ const createPet = async (event) => {
   const response = { statusCode: 200 };
   try {
     const body = JSON.parse(event.body);
-    const newPet = {
-      ...body,
-      petId: uuidv4()
-    }
     const params = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
-      Item: marshall(newPet || {}),
+      Item: marshall(body|| {}),
     };
     const createResult = await db.send(new PutItemCommand(params));
     response.body = JSON.stringify({
@@ -176,10 +172,6 @@ const createOrder = async (event) => {
   const response = { statusCode: 200 };
   try {
     const body = JSON.parse(event.body);
-    const newOrder = {
-      ...body,
-      orderId: uuidv4()
-    }
     const params = {
       TableName: process.env.DYNAMO_STORE_TABLE,
       Item: marshall(body || {}),
