@@ -136,7 +136,7 @@ functions:
           - "dynamodb:DeleteItem"
         Resource: !GetAtt StoresTable.Arn
 
-
+# *******PETS TABLE ***********************
 
 resources:
   Resources:
@@ -156,7 +156,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
-
+# *******STORE TABLE ***********************
     StoresTable:
       Type: AWS::DynamoDB::Table
       Properties:
