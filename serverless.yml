@@ -84,6 +84,23 @@ functions:
         Resource: !GetAtt PetsTable.Arn
 
 
+# ******** Add image to given pet ID ************
+  addImage:
+    handler: api.addImage
+    name: add-Image
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: pet/{petId}/uploadImage
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action: 
+          - "dynamodb:PutItem"
+        Resource: !GetAtt PetsTable.Arn
+
+
 # ****GET ORDER DETAILS*********
   getOrder:
     handler: api.getOrder
@@ -147,7 +164,7 @@ resources:
         AttributeDefinitions:
           - AttributeName: petId
             AttributeType: S
-        
+          
         KeySchema:
           - AttributeName: petId
             KeyType: HASH

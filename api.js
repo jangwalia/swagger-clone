@@ -3,9 +3,8 @@ const {
   GetItemCommand,
   PutItemCommand,
   UpdateItemCommand,
-  DeleteItemCommand,
-  
-} = require("@aws-sdk/client-dynamodb");
+  DeleteItemCommand
+  } = require("@aws-sdk/client-dynamodb");
 
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
@@ -136,6 +135,41 @@ const deletePet = async (event) => {
 
   return response;
 };
+// ************* GET Image of given pet *************
+
+const addImage = async (event) => {
+  const response = { statusCode: 200 };
+  
+  try {
+    const imageUrl = JSON.parse(event.body);
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE_NAME,
+      Key: marshall({ petId: event.pathParameters.petId }),
+    };
+    const { Item } = await db.send(new GetItemCommand(params));
+    Item['photoUrls'].push(imageUrl)
+    response.body = JSON.stringify({
+      message: "Successfully added the data",
+      data: (Item) ? unmarshall(Item) : {},
+      rawData: Item,
+    });
+  } catch (error) {
+    response.statusCode = 500;
+    response.body = JSON.stringify({
+      message: "failed to add data",
+      errorMsg: error.message,
+      errorStack: error.Stack,
+    });
+  }
+
+  return response;
+  
+
+  
+  
+};
+
+
 
 // *********FUNCTIONS FOR ORDER TABLE*********
 
@@ -222,6 +256,7 @@ module.exports = {
   createPet,
   UpdatePet,
   deletePet,
+  addImage,
   getOrder,
   createOrder,
   deleteOrder
