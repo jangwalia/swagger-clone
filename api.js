@@ -5,7 +5,7 @@ const {
   UpdateItemCommand,
   DeleteItemCommand
   } = require("@aws-sdk/client-dynamodb");
-
+const { v4: uuidv4 } = require('uuid');
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
 //**********GET ITEM FUNCTION */
@@ -42,6 +42,7 @@ const createPet = async (event) => {
   const response = { statusCode: 200 };
   try {
     const body = JSON.parse(event.body);
+    body.petId = uuidv4();
     const params = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
       Item: marshall(body|| {}),
@@ -135,39 +136,7 @@ const deletePet = async (event) => {
 
   return response;
 };
-// ************* GET Image of given pet *************
 
-const addImage = async (event) => {
-  const response = { statusCode: 200 };
-  
-  try {
-    const imageUrl = JSON.parse(event.body);
-    const params = {
-      TableName: process.env.DYNAMODB_TABLE_NAME,
-      Key: marshall({ petId: event.pathParameters.petId }),
-    };
-    const { Item } = await db.send(new GetItemCommand(params));
-    Item['photoUrls'].push(imageUrl)
-    response.body = JSON.stringify({
-      message: "Successfully added the data",
-      data: (Item) ? unmarshall(Item) : {},
-      rawData: Item,
-    });
-  } catch (error) {
-    response.statusCode = 500;
-    response.body = JSON.stringify({
-      message: "failed to add data",
-      errorMsg: error.message,
-      errorStack: error.Stack,
-    });
-  }
-
-  return response;
-  
-
-  
-  
-};
 
 
 
@@ -205,6 +174,7 @@ const createOrder = async (event) => {
   const response = { statusCode: 200 };
   try {
     const body = JSON.parse(event.body);
+    body.orderId = uuidv4();
     const params = {
       TableName: process.env.DYNAMO_STORE_TABLE,
       Item: marshall(body || {}),
@@ -256,7 +226,6 @@ module.exports = {
   createPet,
   UpdatePet,
   deletePet,
-  addImage,
   getOrder,
   createOrder,
   deleteOrder
