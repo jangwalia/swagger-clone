@@ -1,11 +1,7 @@
 const db = require("../db");
-const {PutItemCommand} = require("@aws-sdk/client-dynamodb");
-const { v4: uuidv4 } = require('uuid');
-const { marshall} = require("@aws-sdk/util-dynamodb");
-
-
-
-
+const { PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { v4: uuidv4 } = require("uuid");
+const { marshall } = require("@aws-sdk/util-dynamodb");
 
 // ********CREATE NEW ORDER**************
 
@@ -35,7 +31,4 @@ const createOrder = async (event) => {
   return response;
 };
 
-module.exports = {createOrder};
-
-
-
+module.exports = { createOrder };
