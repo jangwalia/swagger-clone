@@ -15,14 +15,16 @@ custom:
   storesTableName: store-table-${self:provider.stage}
 plugins:
   - serverless-iam-roles-per-function
+  
+
 
 functions:
 #****GET PET BY ID ROUTE**********
   getPet:
-    handler: api.getPet
+    handler: Endpoints/Get_pet.getPet
     name: get-pet
     memorySize: 128
-    timeout: 5
+    timeout: 10
     events:
       - http:
           path: pet/{petId}
@@ -36,7 +38,7 @@ functions:
 # *********POST ROUTE FOR CREATING PET********
 
   createPet:
-    handler: api.createPet
+    handler: Endpoints/Create_pet.createPet
     name: create-pet
     memorySize: 128
     timeout: 5
@@ -52,7 +54,7 @@ functions:
 
 # *******PUT ROUTE TO UPDATE PET********
   updatePet:
-    handler: api.updatePet
+    handler: Endpoints/Update_pet.updatePet
     name: update-pet
     memorySize: 128
     timeout: 5
@@ -69,7 +71,7 @@ functions:
 
 # ****DELETE ROUTE TO REMOVE PET*******
   deletePet:
-    handler: api.deletePet
+    handler: Endpoints/Delete_pet.deletePet
     name: delete-pet
     memorySize: 128
     timeout: 5
@@ -88,7 +90,7 @@ functions:
 
 # ****GET ORDER DETAILS*********
   getOrder:
-    handler: api.getOrder
+    handler: Endpoints/Get_order.getOrder
     name: get-order
     memorySize: 128
     timeout: 5
@@ -106,7 +108,7 @@ functions:
 
 # *******POST ORDER********
   createOrder:
-    handler: api.createOrder
+    handler: Endpoints/Create_order.createOrder
     name: create-order
     memorySize: 128
     timeout: 5
@@ -123,7 +125,7 @@ functions:
 
 #******* DELETE ORDER******
   deleteOrder:
-    handler: api.deleteOrder
+    handler: Endpoints/Delete_order.deleteOrder
     name: delete-order
     memorySize: 128
     timeout: 5

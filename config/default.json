@@ -1,0 +1,5 @@
+{
+  "handler":{
+      "endpoint": "https://xp34g8iikg.execute-api.us-west-2.amazonaws.com/dev/pet/1"
+  }
+}

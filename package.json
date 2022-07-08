@@ -4,7 +4,7 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=jest"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,15 @@
     "@aws-sdk/client-dynamodb": "^3.121.0",
     "@aws-sdk/util-dynamodb": "^3.121.0",
     "aws-sdk": "^2.1167.0",
+    "chai-http": "^4.3.0",
+    "config": "^3.3.7",
     "serverless-iam-roles-per-function": "^3.2.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "jest": "^28.1.2",
+    "mocha": "^10.0.0",
+    "serverless-mocha-plugin": "^1.12.0"
   }
 }
