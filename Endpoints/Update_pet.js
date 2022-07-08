@@ -1,5 +1,5 @@
 const db = require("../db");
-const {UpdateItemCommand} = require("@aws-sdk/client-dynamodb");
+const { UpdateItemCommand } = require("@aws-sdk/client-dynamodb");
 const { marshall } = require("@aws-sdk/util-dynamodb");
 
 //**********Update ITEM FUNCTION */
@@ -49,4 +49,4 @@ const UpdatePet = async (event) => {
   return response;
 };
 
-module.exports = {UpdatePet};
+module.exports = { UpdatePet };

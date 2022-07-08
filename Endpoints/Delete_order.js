@@ -1,6 +1,6 @@
 const db = require("../db");
-const {DeleteItemCommand} = require("@aws-sdk/client-dynamodb");
-const { marshall} = require("@aws-sdk/util-dynamodb");
+const { DeleteItemCommand } = require("@aws-sdk/client-dynamodb");
+const { marshall } = require("@aws-sdk/util-dynamodb");
 // ****** DELETE ORDER*********
 const deleteOrder = async (event) => {
   const response = { statusCode: 200 };
@@ -26,4 +26,4 @@ const deleteOrder = async (event) => {
   return response;
 };
 
-module.exports = {deleteOrder};
+module.exports = { deleteOrder };

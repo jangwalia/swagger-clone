@@ -1,6 +1,6 @@
 const db = require("../db");
-const {DeleteItemCommand} = require("@aws-sdk/client-dynamodb");
-const { marshall} = require("@aws-sdk/util-dynamodb");
+const { DeleteItemCommand } = require("@aws-sdk/client-dynamodb");
+const { marshall } = require("@aws-sdk/util-dynamodb");
 
 //**********Delete ITEM FUNCTION */
 
@@ -27,4 +27,4 @@ const deletePet = async (event) => {
 
   return response;
 };
-module.exports = {deletePet};
+module.exports = { deletePet };

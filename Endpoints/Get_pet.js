@@ -1,4 +1,4 @@
-const {GetItemCommand} = require("@aws-sdk/client-dynamodb");
+const { GetItemCommand } = require("@aws-sdk/client-dynamodb");
 const db = require("../db");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
@@ -15,7 +15,7 @@ const getPet = async (event) => {
     const { Item } = await db.send(new GetItemCommand(params));
     response.body = JSON.stringify({
       message: "Successfully Retrieved the data",
-      data: (Item) ? unmarshall(Item) : {},
+      data: Item ? unmarshall(Item) : {},
       rawData: Item,
     });
   } catch (error) {
@@ -30,4 +30,4 @@ const getPet = async (event) => {
   return response;
 };
 
-module.exports = {getPet};
+module.exports = { getPet };

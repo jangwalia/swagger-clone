@@ -1,10 +1,7 @@
 const db = require("../db");
-const {PutItemCommand,} = require("@aws-sdk/client-dynamodb");
-const { v4: uuidv4 } = require('uuid');
-const { marshall} = require("@aws-sdk/util-dynamodb");
-
-
-
+const { PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { v4: uuidv4 } = require("uuid");
+const { marshall } = require("@aws-sdk/util-dynamodb");
 
 //**********Create ITEM FUNCTION */
 
@@ -15,7 +12,7 @@ const createPet = async (event) => {
     body.petId = uuidv4();
     const params = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
-      Item: marshall(body|| {}),
+      Item: marshall(body || {}),
     };
     const createResult = await db.send(new PutItemCommand(params));
     response.body = JSON.stringify({
@@ -33,4 +30,4 @@ const createPet = async (event) => {
 
   return response;
 };
-module.exports = {createPet};
+module.exports = { createPet };
