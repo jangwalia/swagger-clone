@@ -23,6 +23,7 @@
     "aws-sdk": "^2.1167.0",
     "chai-http": "^4.3.0",
     "config": "^3.3.7",
+    "joi": "^17.6.0",
     "serverless-iam-roles-per-function": "^3.2.0",
     "uuid": "^8.3.2"
   },
