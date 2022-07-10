@@ -1,20 +1,23 @@
 const db = require("../db");
+const Joi = require('joi');
 const { PutItemCommand } = require("@aws-sdk/client-dynamodb");
 const { v4: uuidv4 } = require("uuid");
 const { marshall } = require("@aws-sdk/util-dynamodb");
-const schema = require('../validation/checkValidation');
+const {petSchema} = require('../validation/nameValidation')
+//const schema = require('../validation/categoryValidation')
 
 
 //**********Create ITEM FUNCTION */
+
 const createPet = async (event) => {
   const response = { statusCode: 200 };
  
   try {
     const body = JSON.parse(event.body);
-    const {error} = schema.validate(body)
-        if(error){
+    const {error,value} = petSchema.validate(body)
+    if(error){
           response.body = JSON.stringify({
-            message: "name is required",
+            message: "fill all the fields",
             errorMsg: error.message,
             errorStack: error.Stack
           });
@@ -44,18 +47,3 @@ const createPet = async (event) => {
   return response;
 };
 module.exports = { createPet };
-
-// const schema2 = Joi.object().keys({
-//   category: {
-//     name: Joi.string().required()
-//   }
-// })
-// const schema3 = Joi.array().items(Joi.string())
-
-// const schema = Joi.object().keys({
-//   category: schema2,
-//   name: schema1,
-//   status: schema1,
-//   tags: schema3
-// })
-// Joi.validate(body,schema,(err,result)=>{
