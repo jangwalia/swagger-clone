@@ -29,12 +29,12 @@ const createOrder = async (event) => {
         createResult,
       });
     }
-  } catch (error) {
+  } catch (err) {
     response.statusCode = 500;
     response.body = JSON.stringify({
       message: "failed to Create data",
-      errorMsg: error.message,
-      errorStack: error.Stack,
+      errorMsg: err.message,
+      errorStack: err.Stack,
     });
   }
 

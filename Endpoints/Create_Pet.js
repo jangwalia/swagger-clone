@@ -39,8 +39,8 @@ const createPet = async (event) => {
     response.statusCode = 500;
     response.body = JSON.stringify({
       message: "failed to Create data",
-      errMsg: error.message,
-      errStack: error.Stack,
+      errMsg: err.message,
+      errStack: err.Stack,
     });
   }
 
